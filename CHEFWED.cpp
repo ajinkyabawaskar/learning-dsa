@@ -1,47 +1,42 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define ll long long int
 #define fast                          \
     ios_base::sync_with_stdio(false); \
     cin.tie(0);                       \
     cout.tie(0);
-#define ll long long
 
 int main()
 {
-    ll T, N, K;
     fast;
-    cin >> T;
-    while (T--)
+    ll testCase;
+    cin >> testCase;
+    while (testCase--)
     {
-        cin >> N >> K;
-        // declare an array to store the incoming guests
-        ll a[N + 1];
-        map<ll, ll> tableCount;
+        ll numOfGuests, costPerTable;
+        cin >> numOfGuests >> costPerTable;
 
-        // can't find explaination
-        ll ans = 0, vc = 0, t = 1;
-
-        // input all the guests to the table
-        for (ll i = 0; i < N; i++)
+        ll guest[numOfGuests + 1];
+        for (ll i = 0; i < numOfGuests; i++)
         {
-            cin >> a[i];
+            cin >> guest[i];
         }
 
-        // can't find explaination
-        ll col[N + 1][N + 1] = {0};
-
-        for (ll i = 0; i < N; i++)
+        ll col[numOfGuests + 1][numOfGuests + 1] = {0};
+        for (ll i = 0; i < numOfGuests; i++)
         {
-            for (ll j = 0; j < N; j++)
+            for (ll j = 0; j < numOfGuests; j++)
             {
                 col[i][j] = 0;
             }
         }
 
-        for (ll i = 0; i < N; i++)
+        // Family -> count of numOfGuests from that family
+        map<ll, ll> guestsFromFamily;
+        for (ll i = 0; i < numOfGuests; i++)
         {
-            tableCount.clear();
-            for (ll j = 0; j < N; j++)
+            guestsFromFamily.clear();
+            for (ll j = i; j < numOfGuests; j++)
             {
                 if (j == 0)
                 {
@@ -51,60 +46,58 @@ int main()
                 {
                     col[i][j] = col[i][j - 1];
                 }
-
-                if (tableCount.count(a[j]))
+                if (guestsFromFamily.count(guest[j]))
                 {
-                    if (tableCount[a[j]] == 1)
+                    if (guestsFromFamily[guest[j]] == 1)
                     {
                         col[i][j]++;
                     }
                     col[i][j]++;
                 }
-                tableCount[a[j]]++;
+                guestsFromFamily[guest[j]]++;
             }
         }
-        ans = 1e18;
-        // maximum families = 100, therefore one from each family can sit on the table
-        // without a fight occurring
-        ll table = 100;
-        // a two dimensional array to store the results of previous calculations
-        // first index is the family name second index is the person
-        ll dp[101][1001] = {0};
 
-        for (int i = 0; i <= table; i++)
+        ll inefficiency = 1e18;
+        ll table = 100;
+
+        ll conflicts[101][1001] = {0};
+        for (ll i = 0; i <= table; i++)
         {
-            for (ll j = 0; j < table; j++)
+            for (ll j = 0; j <= table; j++)
             {
-                dp[i][j] = 0;
+                conflicts[i][j] = 0;
             }
         }
-        for (ll i = 0; i < N + 1; i++)
+
+        for (ll i = 0; i < numOfGuests + 1; i++)
         {
-            dp[1][i] = col[0][i - 1];
+            conflicts[1][i] = col[0][i - 1];
         }
-        for (ll i = 2; i < table; i++)
+
+        for (ll i = 2; i <= table; i++)
         {
-            dp[i][1] = 0;
+            conflicts[i][1] = 0;
         }
-        for (ll i = 2; i < table; i++)
+
+        for (ll i = 2; i <= table; i++)
         {
-            for (ll j = 2; j < table; j++)
+            for (ll j = 2; j <= numOfGuests; j++)
             {
                 ll best = 1e18;
                 for (ll p = 1; p < j; p++)
                 {
-                    best = min(best, dp[i - 1][p] + col[p][j - 1]);
+                    best = min(best, conflicts[i - 1][p] + col[p][j - 1]);
                 }
-                dp[i][j] = best;
+                conflicts[i][j] = best;
             }
         }
-        for (table = 1; table<=100; table++)
+
+        for (table = 1; table <= 100; table++)
         {
-            ans = min(table*K + dp[table][N] , ans);
+            inefficiency = min(table * costPerTable + conflicts[table][numOfGuests], inefficiency);
         }
 
-        cout << ans << endl;
-        
+        cout << inefficiency << endl;
     }
-    return 0;
 }
