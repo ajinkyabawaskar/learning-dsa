@@ -1,9 +1,14 @@
-$filename=$args[0]
+$filename=$args[1]
+$compilePref = $args[0]
 cls
-rm .\a.exe
-$compileTime = Measure-Command { g++ $filename }
-write-host "Compiled $filename in" $compileTime.Milliseconds "ms"
-$executeTime = Measure-Command { .\a  }
-write-host "Executed in" $executeTime.Milliseconds "ms"
-write-host 
-.\a
+if($compilePref -eq 0) {
+    write-host "Executing"
+    .\a    
+} else {
+    rm .\a.exe
+    write-host "Compiling.."
+    $compileTime = Measure-Command { g++ $filename }
+    write-host "Compiled $filename in" $compileTime.Milliseconds "ms"
+    write-host ">"
+    .\a
+}
