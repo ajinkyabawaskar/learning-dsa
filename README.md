@@ -27,7 +27,7 @@ These tips are not in any logical sequence and neither does it portray the best 
 
 * Use Fast IO instead of regular cin, cout.
   * ```#define fast ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);```
-  *Include ```fast;``` in your main method.
+  * Include ```fast;``` in your main method.
 * Use ```%``` or ```/``` in place of repetitive additions/subtractions.
 * Use ```#include <bits/stdc++.h>``` in place of all other includes. (Is a bad programming practice)
 * If you want to count the number of digits required to make the sum of digits equal to a given number, then keep subtracting 9 from the number, and count how many times you subtracted.
