@@ -17,8 +17,8 @@ Solutions to live contests are not uploaded here, and never will be.
 * Utility PowerShell script:
   * ```.\run.ps1 <preference> <filename>```
   * ```<preference>``` could be:
-   * 0 to only execute the file
-   * 1 to compile and execute the file
+    * 0 to only execute the file
+    * 1 to compile and execute the file
   * ```<filename>``` is name of the file including extension.
 
 
