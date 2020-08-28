@@ -9,6 +9,6 @@ if($compilePref -eq 0) {
     write-host "Compiling.."
     $compileTime = Measure-Command { g++ $filename }
     write-host "Compiled $filename in" $compileTime.Milliseconds "ms"
-    write-host ">"
+    write-host "Executing.."
     .\a
 }
