@@ -2,3 +2,5 @@
 */*.exe
 .vscode/*
 */run.ps1
+input.txt
+output.txt
